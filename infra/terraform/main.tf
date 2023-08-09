@@ -41,19 +41,6 @@ resource "aws_internet_gateway" "ig" {
   }
 }
 
-resource "aws_eip" "nat_eip_subnet_1" {
-  vpc        = true
-  depends_on = [aws_internet_gateway.ig]
-}
-
-resource "aws_nat_gateway" "nat_subenet_1" {
-  allocation_id = aws_eip.nat_eip_subnet_1.id
-  subnet_id     = aws_subnet.public_subnet_1.id
-  depends_on    = [aws_internet_gateway.ig]
-  tags = {
-    Name = "nat"
-  }
-}
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id            = aws_vpc.vpc.id
