@@ -1,7 +1,7 @@
 resource "aws_security_group" "ec2_ssh_allow_group" {
   name        = "ec2_ssh_allow_group"
   description = "Allow ssh inboud traffic"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description = "HTTPS ingress"
