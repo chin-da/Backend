@@ -25,6 +25,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String nickname;
 
+    @Column(nullable = false)
+    private int age;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
