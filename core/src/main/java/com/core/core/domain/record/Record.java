@@ -28,5 +28,8 @@ public class Record extends BaseEntity {
     @Column(nullable = false)
     private Integer measurement;
 
-
+    @OneToOne
+    @JoinColumn(name = "certificate_id")
+    @Column(nullable = true)
+    private Certificate certificate;
 }
