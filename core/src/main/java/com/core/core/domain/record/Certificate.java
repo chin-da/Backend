@@ -14,6 +14,10 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CertificateType type;
+
     @Column(nullable = false)
     private String uri;
 }
