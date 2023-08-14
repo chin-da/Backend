@@ -25,3 +25,9 @@ spring:
 
 server:
   port: 8082
+
+
+oauth:
+  kakao:
+    client-id: ${client-id}
+    redirect-uri: ${redirect-uri}
