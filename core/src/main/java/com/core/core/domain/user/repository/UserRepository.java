@@ -1,7 +1,10 @@
 package com.core.core.domain.user.repository;
 
 import com.core.core.domain.user.User;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends Repository<User, Long> {
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(final String email);
 }
