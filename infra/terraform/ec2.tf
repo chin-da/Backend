@@ -42,7 +42,7 @@ resource "aws_instance" "master_node_1" {
   key_name      = data.aws_key_pair.ec2-ssh-key.key_name
 
   subnet_id              = module.vpc.public_subnets[0]
-  vpc_security_group_ids = [aws_security_group.ec2_ssh_allow_group.id, aws_security_group.vpc_traffic_allow_group.id, aws_security_group.all_out_bound_allow_group.id]
+  vpc_security_group_ids = [aws_security_group.ec2_ssh_allow_group.id, aws_security_group.vpc_traffic_allow_group.id, aws_security_group.all_out_bound_allow_group.id, aws_security_group.ec2_internet_inbound_allow_group.id]
 
   associate_public_ip_address = true
 
@@ -61,7 +61,7 @@ resource "aws_instance" "worker_node_1" {
   key_name      = data.aws_key_pair.ec2-ssh-key.key_name
 
   subnet_id              = module.vpc.public_subnets[0]
-  vpc_security_group_ids = [aws_security_group.ec2_ssh_allow_group.id, aws_security_group.vpc_traffic_allow_group.id, aws_security_group.all_out_bound_allow_group.id]
+  vpc_security_group_ids = [aws_security_group.ec2_ssh_allow_group.id, aws_security_group.vpc_traffic_allow_group.id, aws_security_group.all_out_bound_allow_group.id, aws_security_group.ec2_internet_inbound_allow_group.id]
 
   # Temporary deploy instance in public subnet and give public IP for test
   associate_public_ip_address = true

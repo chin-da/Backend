@@ -34,13 +34,26 @@ resource "aws_security_group" "vpc_traffic_allow_group" {
 
 resource "aws_security_group" "all_out_bound_allow_group" {
   name        = "all_out_bound_allow_group"
-  description = "Allow traffic from the vpc, allow all traffic to the internet"
+  description = "allow all traffic to the internet"
   vpc_id      = module.vpc.vpc_id
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "ec2_internet_inbound_allow_group" {
+  name        = "internet_inbound_allow_group"
+  description = "Allow traffic from the internet"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 30000
+    to_port     = 30000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
