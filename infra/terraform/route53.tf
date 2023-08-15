@@ -2,14 +2,10 @@ resource "aws_route53_zone" "primary" {
   name = "chinda.kr"
 }
 
-resource "aws_route53_zone" "api" {
-  name = "api.chinda.kr"
-}
-
-resource "aws_route53_record" "api-ns" {
+resource "aws_route53_record" "api" {
   zone_id = aws_route53_zone.primary.zone_id
   name    = "api.chinda.kr"
-  type    = "NS"
+  type    = "A"
   ttl     = "30"
-  records = aws_route53_zone.api.name_servers
+  records = [aws_instance.master_node_1.public_ip, aws_instance.worker_node_1.public_ip]
 }
