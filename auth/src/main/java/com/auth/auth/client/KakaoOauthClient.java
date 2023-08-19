@@ -36,7 +36,7 @@ public class KakaoOauthClient implements OAuthClient {
 
     @Override
     public String getAccessToken(String authCode) {
-        MultiValueMap<String, String> body = createRequestBody(authCode);
+        MultiValueMap<String, String> body = createRequestBodyForAccessToken(authCode);
         HttpHeaders header = createRequestHeader();
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
@@ -55,7 +55,7 @@ public class KakaoOauthClient implements OAuthClient {
 
     @Override
     public OauthUserResponse getUser(String accessToken) {
-        HttpEntity<HttpHeaders> request = createRequest(accessToken);
+        HttpEntity<HttpHeaders> request = createRequestBodyForUserInformation(accessToken);
 
         restTemplate = new RestTemplate();
 
@@ -73,7 +73,7 @@ public class KakaoOauthClient implements OAuthClient {
 
     }
 
-    MultiValueMap<String, String> createRequestBody(String authCode) {
+    private MultiValueMap<String, String> createRequestBodyForAccessToken(String authCode) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
@@ -88,7 +88,7 @@ public class KakaoOauthClient implements OAuthClient {
         return new HttpHeaders(header);
     }
 
-    private HttpEntity<HttpHeaders> createRequest(String accessToken) {
+    private HttpEntity<HttpHeaders> createRequestBodyForUserInformation(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         return new HttpEntity<>(headers);
