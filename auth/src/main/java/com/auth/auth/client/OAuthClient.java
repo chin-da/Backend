@@ -4,7 +4,7 @@ import com.auth.auth.dto.OauthUserResponse;
 
 public interface OAuthClient {
 
-    public String getAccessToken(String authCode);
+    String getAccessToken(String authCode);
 
-    public OauthUserResponse getUser(String accessToken);
+    OauthUserResponse getUser(String accessToken);
 }
