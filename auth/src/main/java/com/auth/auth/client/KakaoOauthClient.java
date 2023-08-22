@@ -1,28 +1,30 @@
 package com.auth.auth.client;
 
-
 import com.auth.auth.dto.KakaoTokenResponse;
 import com.auth.auth.dto.KakaoUserResponse;
 import com.auth.auth.dto.OauthUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
 @RequiredArgsConstructor
 public class KakaoOauthClient implements OAuthClient {
-    public static final String KAKAO_ACCESS_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
-    public static final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
+
+
+    private final KakaoApiClient kakaoApiClient;
+    private final KakaoAuthApiClient kakaoAuthApiClient;
+
+    private static final String GRANT_TYPE = "authorization_code";
+    private static final String KAKAO_API_URI = "https://kapi.kakao.com";
+    private static final String KAKAO_AUTH_API_URI = "https://kauth.kakao.com";
 
     @Value("${oauth.kakao.client-id}")
     private String clientId;
@@ -30,67 +32,30 @@ public class KakaoOauthClient implements OAuthClient {
     @Value("${oauth.kakao.redirect-uri}")
     private String redirectUri;
 
-    private RestTemplate restTemplate;
-
-    public static final String GRANT_TYPE = "authorization_code";
-
     @Override
     public String getAccessToken(String authCode) {
-        MultiValueMap<String, String> body = createRequestBodyForAccessToken(authCode);
-        HttpHeaders header = createRequestHeader();
-
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, header);
-
-        restTemplate = new RestTemplate();
-
-        ResponseEntity<KakaoTokenResponse> response = restTemplate.exchange(
-                KAKAO_ACCESS_TOKEN_URI,
-                POST,
-                request,
-                KakaoTokenResponse.class
-        );
-
-        return response.getBody().getAccessToken();
+        return kakaoAuthApiClient.getAccessToken(GRANT_TYPE, clientId, redirectUri, authCode).getAccessToken();
     }
 
     @Override
     public OauthUserResponse getUser(String accessToken) {
-        HttpEntity<HttpHeaders> request = createRequestBodyForUserInformation(accessToken);
-
-        restTemplate = new RestTemplate();
-
-        try {
-            ResponseEntity<KakaoUserResponse> response = restTemplate.exchange(
-                    KAKAO_USER_INFO_URI,
-                    GET,
-                    request,
-                    KakaoUserResponse.class
-            );
-            return response.getBody();
-        } catch (Exception e) { // TODO : 커스텀 exception 으로 바꾸기
-            throw new IllegalArgumentException("정보를 가져오는 데 실패했습니다.");
-        }
-
+        return kakaoApiClient.getUser(accessToken);
     }
 
-    private MultiValueMap<String, String> createRequestBodyForAccessToken(String authCode) {
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", GRANT_TYPE);
-        body.add("client_id", clientId);
-        body.add("redirect_uri", redirectUri);
-        body.add("code", authCode);
-        return new LinkedMultiValueMap<>(body);
+    @FeignClient(name = "kakaoApiClient", url = KAKAO_API_URI)
+    public interface KakaoApiClient {
+        @GetMapping(value = "/v2/user/me")
+        KakaoUserResponse getUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken);
     }
 
-    HttpHeaders createRequestHeader() {
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        return new HttpHeaders(header);
-    }
-
-    private HttpEntity<HttpHeaders> createRequestBodyForUserInformation(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
-        return new HttpEntity<>(headers);
+    @FeignClient(name = "kakaoAuthApiClient", url = KAKAO_AUTH_API_URI)
+    public interface KakaoAuthApiClient {
+        @PostMapping(value = "/oauth/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+        KakaoTokenResponse getAccessToken(
+                @RequestParam("grant_type") String grantType,
+                @RequestParam("client_id") String clientId,
+                @RequestParam("redirect_uri") String redirectUri,
+                @RequestParam("code") String code
+        );
     }
 }
