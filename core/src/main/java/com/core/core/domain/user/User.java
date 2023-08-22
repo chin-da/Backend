@@ -3,7 +3,6 @@ package com.core.core.domain.user;
 import com.core.core.global.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -37,10 +36,4 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private Double weight;
-
-    @Column(nullable = false)
-    @ColumnDefault(value = "false")
-    private boolean agreedKakaoMarketing;
-
-
 }
