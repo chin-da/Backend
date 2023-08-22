@@ -1,6 +1,6 @@
 package com.auth.auth.client;
 
-import com.core.core.domain.user.Provider;
+import com.core.core.domain.user.Platform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +12,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuthClientProvider {
 
-    private static final Map<Provider, OAuthClient> oAuthClientMap = new HashMap<>();
+    private static final Map<Platform, OAuthClient> oAuthClientMap = new HashMap<>();
 
     private final KakaoOauthClient kakaoOauthClient;
 
     @PostConstruct
     void initializeOAuthClientMap() {
-        oAuthClientMap.put(Provider.KAKAO, kakaoOauthClient);
+        oAuthClientMap.put(Platform.KAKAO, kakaoOauthClient);
     }
 
-    public OAuthClient getClient(Provider oAuthProvider) {
-        return oAuthClientMap.get(oAuthProvider);
+    public OAuthClient getClient(String platformName) {
+        Platform platform = Platform.valueOf(platformName);
+        return oAuthClientMap.get(platform);
     }
 }
