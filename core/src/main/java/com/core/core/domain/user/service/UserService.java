@@ -13,8 +13,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public boolean isRegisteredUser(final Long socialId) {
-        Optional<User> user = userRepository.findBySocialId(socialId);
-        return user.isPresent();
+    public Optional<User> findUserWithSocialId(final Long socialId) {
+        Optional<User> user = userRepository.findUserBySocialId(socialId);
+        return user;
     }
 }
