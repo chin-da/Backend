@@ -14,12 +14,14 @@ public class OAuthService {
     private final OAuthClientProvider oAuthClientProvider;
     private final UserService userService;
 
+    private static final String TOKEN_PREFIX = "Bearer ";
+
     public void login(final String platformName, final String code) {
 
         OAuthClient oAuthClient = oAuthClientProvider.getClient(platformName);
 
         String accessToken = oAuthClient.getAccessToken(code);
-        OauthUserResponse user = oAuthClient.getUser(accessToken);
+        OauthUserResponse user = oAuthClient.getUser(TOKEN_PREFIX + accessToken);
         boolean isRegistered = userService.isRegisteredUser(user.getId());
 
         if (isRegistered) {
