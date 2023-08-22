@@ -1,4 +1,4 @@
-package com.auth.auth.controller;
+package com.api.api.auth;
 
 import com.auth.auth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
