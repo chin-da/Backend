@@ -1,6 +1,6 @@
 package com.core.core.domain.user;
 
-public enum Provider {
+public enum Platform {
     GOOGLE(),
     KAKAO();
 }
