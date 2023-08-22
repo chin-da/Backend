@@ -16,10 +16,10 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String socialId;
+    private Long socialId;
 
     @Column(nullable = false)
-    private Provider provider;
+    private Platform platform;
 
     @Column(nullable = false, unique = true)
     private String nickname;
