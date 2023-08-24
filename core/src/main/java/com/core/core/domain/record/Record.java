@@ -30,6 +30,5 @@ public class Record extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "certificate_id")
-    @Column(nullable = true)
     private Certificate certificate;
 }
