@@ -34,7 +34,7 @@ public class JwtProvider {
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L)); // TODO: 유효기간 상수로 빼기
 
-        claims.put("userId", userId);
+        claims.put("sub", userId);
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
