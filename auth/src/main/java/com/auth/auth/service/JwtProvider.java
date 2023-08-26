@@ -26,7 +26,6 @@ public class JwtProvider {
         final Date now = new Date();
 
         Claims claims = Jwts.claims()
-                .setSubject("access_token")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
 
