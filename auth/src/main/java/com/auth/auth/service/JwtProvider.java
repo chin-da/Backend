@@ -4,68 +4,59 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Base64;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.util.Date;
 
 @Service
 public class JwtProvider {
 
-    @Value("${jwt.secret}")
-    private String jwtSecretKey;
+    private final KeyPair keyPair;
+    private static final int RSA_KEY_SIZE = 2048;
 
-    @PostConstruct
-    protected void init() {
-        jwtSecretKey = Base64.getEncoder()
-                .encodeToString(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
+    public JwtProvider() throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(RSA_KEY_SIZE);
+        keyPair = keyPairGenerator.generateKeyPair();
     }
 
-    public String issueToken(Long userId) {
+    public String issueToken(final Long userId) {
         final Date now = new Date();
 
-        final Claims claims = Jwts.claims()
+        Claims claims = Jwts.claims()
                 .setSubject("access_token")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L)); // TODO: 유효기간 상수로 빼기
+                .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
 
         claims.put("sub", userId);
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
-                .signWith(getSigningKey())
+                .signWith(keyPair.getPrivate(), SignatureAlgorithm.RS256)
                 .compact();
-    }
-
-    private Key getSigningKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public boolean verifyToken(String token) {
         try {
-            final Claims claims = getBody(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(keyPair.getPublic())
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    private Claims getBody(final String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+    public String getJwtContents(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(keyPair.getPublic())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    public String getJwtContents(String token) {
-        final Claims claims = getBody(token);
-        return (String) claims.get("userId");
+        return claims.get("sub").toString();
     }
 }
