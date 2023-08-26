@@ -15,6 +15,7 @@ public class JwtProvider {
 
     private final KeyPair keyPair;
     private static final int RSA_KEY_SIZE = 2048;
+    private static final int jwtExpiration = 120 * 60;
 
     public JwtProvider() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -27,7 +28,7 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims()
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L));
+                .setExpiration(new Date(now.getTime() + jwtExpiration * 1000L));
 
         claims.put("sub", userId);
 
