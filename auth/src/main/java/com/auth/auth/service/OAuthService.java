@@ -27,7 +27,7 @@ public class OAuthService {
         Optional<User> user = userRepository.findUserBySocialId(socialId);
         if (user.isPresent()) {
             User registeredUser = user.get();
-            String token = jwtProvider.issueToken(registeredUser.getId(), registeredUser.getSocialId());
+            String token = jwtProvider.issueToken(registeredUser.getId());
             return TokenResponseDto.of(token);
         }
         // TODO: 회원가입 로직 구현

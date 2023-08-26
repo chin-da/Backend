@@ -26,7 +26,7 @@ public class JwtProvider {
                 .encodeToString(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String issueToken(Long userId, Long socialId) {
+    public String issueToken(Long userId) {
         final Date now = new Date();
 
         final Claims claims = Jwts.claims()
@@ -35,7 +35,6 @@ public class JwtProvider {
                 .setExpiration(new Date(now.getTime() + 120 * 60 * 1000L)); // TODO: 유효기간 상수로 빼기
 
         claims.put("userId", userId);
-        claims.put("socialId", socialId);
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
