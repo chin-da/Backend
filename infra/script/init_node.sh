@@ -9,8 +9,7 @@ git init
 git remote add -f origin https://github.com/chin-da/Backend.git
 git config core.sparseCheckout true
 echo "infra" >>.git/info/sparse-checkout
-# TODO: change branch name to main before merge
-git pull origin fix/#18-change-network-plugin
+git pull origin main
 
 cd ~/chinda/infra/script
 chmod +x *.sh
