@@ -46,7 +46,7 @@ resource "aws_instance" "master_node_1" {
 
   associate_public_ip_address = true
 
-  user_data = file("../script/set_container_runtime_and_kubeadm.sh")
+  user_data = file("../script/init_master_node.sh")
 
   tags = {
     Name = "master-node-1"
@@ -66,7 +66,7 @@ resource "aws_instance" "worker_node_1" {
   # Temporary deploy instance in public subnet and give public IP for test
   associate_public_ip_address = true
 
-  user_data = file("../script/set_container_runtime_and_kubeadm.sh")
+  user_data = file("../script/init_worker_node.sh")
 
   iam_instance_profile = aws_iam_instance_profile.k8s_instance_profile.name
 
