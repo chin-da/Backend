@@ -31,4 +31,19 @@ public class JwtProviderTest {
         //then
         assertThat(token).isNotNull();
     }
+
+    @Test
+    @DisplayName("토큰 유효성 검증에 성공한다.")
+    void should_ReturnTrue_when_Check_Validation() {
+
+        // given
+        Long userId = 1L;
+        String token = jwtProvider.issueToken(userId);
+
+        //when
+        boolean isValid = jwtProvider.verifyToken(token);
+
+        //then
+        assertThat(isValid).isTrue();
+    }
 }
