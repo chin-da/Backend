@@ -30,7 +30,7 @@ public class JwtProviderTest {
 
     @Test
     @DisplayName("토큰 생성에 성공한다.")
-    void should_Success_To_Create_Token() {
+    void should_Return_NotNull_when_Create_Token() {
 
         //when
         String token = jwtProvider.issueToken(userId);
@@ -53,5 +53,17 @@ public class JwtProviderTest {
         assertThat(isValid).isTrue();
     }
 
+    @Test
+    @DisplayName("토큰에 담긴 사용자 아이디를 반환한다.")
+    void should_ReturnExactUserId_when_getJwtSubject() {
 
+        // given
+        String token = makeToken();
+
+        //when
+        Long sub = jwtProvider.getJwtSubject(token);
+
+        //then
+        assertThat(sub).isEqualTo(userId);
+    }
 }
