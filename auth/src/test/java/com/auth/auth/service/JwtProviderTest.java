@@ -18,12 +18,19 @@ public class JwtProviderTest {
     @Autowired
     private JwtProvider jwtProvider;
 
+    private final Long userId;
+
+    public JwtProviderTest() {
+        this.userId = 1L;
+    }
+
+    String makeToken() {
+        return jwtProvider.issueToken(userId);
+    }
+
     @Test
     @DisplayName("토큰 생성에 성공한다.")
     void should_Success_To_Create_Token() {
-
-        // given
-        Long userId = 1L;
 
         //when
         String token = jwtProvider.issueToken(userId);
@@ -37,8 +44,7 @@ public class JwtProviderTest {
     void should_ReturnTrue_when_Check_Validation() {
 
         // given
-        Long userId = 1L;
-        String token = jwtProvider.issueToken(userId);
+        String token = makeToken();
 
         //when
         boolean isValid = jwtProvider.verifyToken(token);
@@ -46,4 +52,6 @@ public class JwtProviderTest {
         //then
         assertThat(isValid).isTrue();
     }
+
+
 }
