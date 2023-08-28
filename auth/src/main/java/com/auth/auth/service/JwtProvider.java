@@ -51,12 +51,14 @@ public class JwtProvider {
         }
     }
 
-    public String getJwtContents(String token) {
+    public long getJwtSubject(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(keyPair.getPublic())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.get("sub").toString();
+
+        return Long.parseLong(claims.get("sub").toString());
     }
+
 }
