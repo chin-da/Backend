@@ -1,0 +1,4 @@
+rootProject.name = 'chinda-ddd'
+include 'ranking'
+include'user'
+include'user-shared-kernel'
