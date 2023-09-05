@@ -32,5 +32,4 @@ oauth:
     redirect-uri: ${redirect-uri}
 
 jwt:
-  public-key: ${jwt-public-key}
-  private-key: ${jwt-private-key}
+  secret: ${jwt-secret-key}
