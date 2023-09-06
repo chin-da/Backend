@@ -1,6 +1,5 @@
 package com.api.api.advice;
 
-import com.common.common.exception.ErrorCode;
 import com.common.common.exception.dto.ErrorResponse;
 import com.common.common.exception.model.CustomException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,19 +20,20 @@ public class GlobalExceptionHandler {
     /**
      * 500 Internal Server
      */
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorResponse handleException(final Exception e) {
         logger.error("{} : {}", e.getClass(), e.getMessage());
-        return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_ERROR);
+        return ErrorResponse.of(500, e.getMessage());
     }
 
     /**
      * Custom error
      */
     @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<ErrorResponse> handleSoptException(CustomException e) {
-        return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.error(e.getError(), e.getMessage()));
+    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+        return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getStatusCode(), e.getMessage()));
     }
 
 }

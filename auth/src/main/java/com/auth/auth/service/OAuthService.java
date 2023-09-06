@@ -3,7 +3,7 @@ package com.auth.auth.service;
 import com.auth.auth.client.OAuthClient;
 import com.auth.auth.client.OAuthClientProvider;
 import com.auth.auth.dto.OauthUserResponse;
-import com.common.common.exception.ErrorCode;
+import com.common.common.exception.MessageConstants;
 import com.common.common.exception.model.NotFoundException;
 import com.core.core.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class OAuthService {
         boolean isRegistered = userService.isRegisteredUser(user.getId());
 
         if (!isRegistered) {
-            throw new NotFoundException(ErrorCode.UNAUTHORIZED_EXCEPTION);
+            throw new NotFoundException(MessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
         // TODO : 토큰 반환 기능 구현
     }
