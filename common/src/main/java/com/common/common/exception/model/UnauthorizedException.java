@@ -1,12 +1,12 @@
 package com.common.common.exception.model;
 
-import com.common.common.exception.ErrorCode;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class UnauthorizedException extends CustomException {
 
-    public UnauthorizedException(ErrorCode error) {
-        super(error);
+    public UnauthorizedException(final String message) {
+        super(HttpStatus.UNAUTHORIZED, message);
     }
 }

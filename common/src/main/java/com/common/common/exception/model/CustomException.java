@@ -1,19 +1,19 @@
 package com.common.common.exception.model;
 
-import com.common.common.exception.ErrorCode;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class CustomException extends RuntimeException {
 
-    private final ErrorCode error;
+    private final HttpStatus httpStatus;
 
-    public CustomException(ErrorCode error) {
-        super(error.getMessage());
-        this.error = error;
+    public CustomException(HttpStatus status, String message) {
+        super(message);
+        this.httpStatus = status;
     }
 
-    public int getHttpStatus() {
-        return error.getHttpStatusCode();
+    public int getStatusCode() {
+        return httpStatus.value();
     }
 }
