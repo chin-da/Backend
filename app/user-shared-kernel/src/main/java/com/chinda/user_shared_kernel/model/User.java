@@ -18,7 +18,9 @@ public abstract class User {
     protected Long socialId;
 
     @Column(nullable = false)
-    protected Platform platform;
+
+    @Enumerated(value = EnumType.STRING)
+    private Platform platform;
 
     @Column(nullable = false, unique = true)
     protected String nickname;
