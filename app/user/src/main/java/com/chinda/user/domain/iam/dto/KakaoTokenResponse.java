@@ -1,4 +1,4 @@
-package com.auth.auth.dto;
+package com.chinda.user.domain.iam.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoTokenResponse {
+public class KakaoTokenResponse implements OAuthTokenResponse {
 
     private String accessToken;
 }
