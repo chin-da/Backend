@@ -1,8 +1,8 @@
-package com.auth.auth.client;
+package com.chinda.user.domain.iam;
 
-import com.auth.auth.dto.KakaoTokenResponse;
-import com.auth.auth.dto.KakaoUserResponse;
-import com.auth.auth.dto.OauthUserResponse;
+import com.chinda.user_shared_kernel.model.Platform;
+import com.chinda.user.domain.iam.dto.KakaoTokenResponse;
+import com.chinda.user.domain.iam.dto.KakaoUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
 @RequiredArgsConstructor
-public class KakaoOauthClient implements OAuthClient {
-
-
+public class KakaoOAuthRequester implements OAuthRequester {
     private final KakaoApiClient kakaoApiClient;
     private final KakaoAuthApiClient kakaoAuthApiClient;
 
     private static final String GRANT_TYPE = "authorization_code";
     private static final String KAKAO_API_URI = "https://kapi.kakao.com";
     private static final String KAKAO_AUTH_API_URI = "https://kauth.kakao.com";
+
+    private static final String TOKEN_PREFIX = "Bearer ";
+    private static final Platform PLATFORM = Platform.KAKAO;
+
 
     @Value("${oauth.kakao.client-id}")
     private String clientId;
@@ -33,14 +35,16 @@ public class KakaoOauthClient implements OAuthClient {
     private String redirectUri;
 
     @Override
-    public String getAccessToken(String authCode) {
+    public OAuthAgreedUser getOAuthAgreedUser(String authCode) {
+        String accessToken = getAccessToken(authCode);
+        return new OAuthAgreedUser(PLATFORM, kakaoApiClient.getUser(TOKEN_PREFIX + accessToken));
+    }
+
+    private String getAccessToken(String authCode) {
         return kakaoAuthApiClient.getAccessToken(GRANT_TYPE, clientId, redirectUri, authCode).getAccessToken();
     }
 
-    @Override
-    public OauthUserResponse getUser(String accessToken) {
-        return kakaoApiClient.getUser(accessToken);
-    }
+
 
     @FeignClient(name = "kakaoApiClient", url = KAKAO_API_URI)
     public interface KakaoApiClient {
