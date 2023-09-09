@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LoginAndRegisterService {
+public class AccountService {
 
     private final KakaoOAuthRequester kakaoOAuthRequester;
     private final UserRepository userRepository;

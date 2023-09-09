@@ -1,6 +1,6 @@
 package com.chinda.user.web.iam;
 
-import com.chinda.user.application.LoginAndRegisterService;
+import com.chinda.user.application.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final LoginAndRegisterService oAuthService;
+    private final AccountService oAuthService;
 
     @PostMapping("/login")
     public void login(
