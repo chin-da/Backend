@@ -1,4 +1,4 @@
-package com.chinda.model;
+package com.chinda.user_shared_kernel.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

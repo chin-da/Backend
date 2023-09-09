@@ -1,9 +1,8 @@
-package com.chinda.model;
+package com.chinda.user_shared_kernel.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @Entity
