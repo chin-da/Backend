@@ -1,6 +1,6 @@
-package com.api.api.auth;
+package com.chinda.user.web.iam;
 
-import com.auth.auth.service.OAuthService;
+import com.chinda.user.application.LoginAndRegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final OAuthService oAuthService;
+    private final LoginAndRegisterService oAuthService;
 
     @PostMapping("/login")
     public void login(
             @RequestParam(name = "platform", required = true) final String platform,
             @RequestParam(name = "code", required = true) final String code) {
-        oAuthService.login(platform, code);
-        // TODO : 토큰 반환 기능 구현
+        try{
+            oAuthService.login(platform, code);
+            // TODO : 토큰 반환 기능 구현
+        } catch (RuntimeException e) {
+            // TODO : 회원가입 페이지로 이동
+        }
     }
 }
