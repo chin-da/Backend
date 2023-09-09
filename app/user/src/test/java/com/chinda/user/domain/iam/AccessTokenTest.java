@@ -1,6 +1,7 @@
-package com.auth.auth.service;
+package com.chinda.user.domain.iam;
 
-import com.auth.auth.TestConfiguration;
+
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -9,19 +10,16 @@ import org.springframework.test.context.ContextConfiguration;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ActiveProfiles({"local"})
-@ContextConfiguration(classes = TestConfiguration.class)
-public class JwtProviderTest {
+public class AccessTokenTest {
 
-    private final JwtProvider jwtProvider = new JwtProvider();
 
-    private final Long userId;
+    private final Long userId = 1L;
+    private final Long defaultExpireTime = 1000L;
+    private final String publicKey = "temp";
+    private final String privateKey = "temp";
 
-    public JwtProviderTest() throws Exception {
-        this.userId = 1L;
-    }
-
-    String makeToken() {
-        return jwtProvider.issueToken(userId);
+    AccessToken makeToken() {
+        return new AccessToken(userId, defaultExpireTime, privateKey);
     }
 
     @Test
@@ -29,7 +27,7 @@ public class JwtProviderTest {
     void should_Return_NotNull_when_Create_Token() {
 
         //when
-        String token = jwtProvider.issueToken(userId);
+        AccessToken token = new AccessToken(userId, defaultExpireTime, privateKey);
 
         //then
         assertThat(token).isNotNull();
@@ -40,10 +38,10 @@ public class JwtProviderTest {
     void should_ReturnTrue_when_Check_Validation() {
 
         // given
-        String token = makeToken();
+        AccessToken token = makeToken();
 
         //when
-        boolean isValid = jwtProvider.verifyToken(token);
+        boolean isValid = token.verifySignature(publicKey);
 
         //then
         assertThat(isValid).isTrue();
@@ -54,10 +52,10 @@ public class JwtProviderTest {
     void should_ReturnExactUserId_when_getJwtSubject() {
 
         // given
-        String token = makeToken();
+        AccessToken token = makeToken();
 
         //when
-        Long sub = jwtProvider.getJwtSubject(token);
+        Long sub = token.getSubject(publicKey);
 
         //then
         assertThat(sub).isEqualTo(userId);
