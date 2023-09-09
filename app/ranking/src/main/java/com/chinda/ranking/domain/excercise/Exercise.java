@@ -1,4 +1,4 @@
-package com.core.core.domain.exercise;
+package com.chinda.ranking.domain.excercise;
 
 import com.core.core.global.entity.BaseEntity;
 import lombok.Getter;

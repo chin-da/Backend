@@ -1,4 +1,4 @@
-package com.core.core.domain.exercise.repository;
+package com.chinda.ranking.domain.excercise;
 
 import com.core.core.domain.exercise.Exercise;
 import org.springframework.data.repository.Repository;

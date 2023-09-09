@@ -1,6 +1,6 @@
-package com.core.core.domain.record;
+package com.chinda.ranking.domain.record;
 
-import com.core.core.domain.exercise.Exercise;
+import com.chinda.ranking.domain.excercise.Exercise;
 import com.core.core.domain.user.User;
 import com.core.core.global.entity.BaseEntity;
 import lombok.Getter;

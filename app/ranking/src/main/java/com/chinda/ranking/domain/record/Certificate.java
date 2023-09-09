@@ -1,4 +1,4 @@
-package com.core.core.domain.record;
+package com.chinda.ranking.domain.record;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
