@@ -30,3 +30,7 @@ oauth:
   kakao:
     client-id: ${client-id}
     redirect-uri: ${redirect-uri}
+
+jwt:
+  public-key-pem: ${JWT_PUBLIC_KEY_PEM}
+  private-key-pem: ${JWT_PRIVATE_KEY_PEM}
