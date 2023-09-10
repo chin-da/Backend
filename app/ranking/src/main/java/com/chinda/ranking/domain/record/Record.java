@@ -1,12 +1,12 @@
 package com.chinda.ranking.domain.record;
 
+import com.chinda.common.model.BaseEntity;
 import com.chinda.ranking.domain.excercise.Exercise;
-import com.core.core.domain.user.User;
-import com.core.core.global.entity.BaseEntity;
+import com.chinda.user_shared_kernel.model.User;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Getter

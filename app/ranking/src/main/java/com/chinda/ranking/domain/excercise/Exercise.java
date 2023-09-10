@@ -1,15 +1,14 @@
 package com.chinda.ranking.domain.excercise;
 
-import com.core.core.global.entity.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Exercise extends BaseEntity {
+public class Exercise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

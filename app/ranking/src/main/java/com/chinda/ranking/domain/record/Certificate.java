@@ -1,9 +1,9 @@
 package com.chinda.ranking.domain.record;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Getter
