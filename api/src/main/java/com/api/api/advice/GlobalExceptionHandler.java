@@ -1,5 +1,6 @@
 package com.api.api.advice;
 
+import com.common.common.exception.MessageConstants;
 import com.common.common.exception.dto.ErrorResponse;
 import com.common.common.exception.model.CustomException;
 import lombok.extern.slf4j.Slf4j;
@@ -7,15 +8,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    /**
+     * 400 BAD_REQUEST
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BindException.class)
+    protected ErrorResponse handleBindException(final BindException e) {
+        FieldError fieldError = Objects.requireNonNull(e.getFieldError());
+        return ErrorResponse.of(400, MessageConstants.BAD_REQUEST.getMessage(),
+                String.format("%s는 %s", fieldError.getField(), fieldError.getDefaultMessage()));
+    }
 
     /**
      * 500 Internal Server

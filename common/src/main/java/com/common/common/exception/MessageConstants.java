@@ -9,6 +9,12 @@ import lombok.Getter;
 public enum MessageConstants {
 
     /**
+     * 400 BAD REQUEST
+     */
+    BAD_REQUEST("잘못된 요청입니다."),
+
+
+    /**
      * 401 UNAUTHORIZED
      */
     UNAUTHORIZED("권한이 없는 사용자입니다."),
