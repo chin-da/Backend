@@ -69,7 +69,7 @@ public class AccessTokenTest {
         boolean isValid = token.verifySignature(publicKey);
 
         //then
-        assertThat(isValid).isFalse();
+        assertThat(isValid).isTrue();
     }
 
     @Test
