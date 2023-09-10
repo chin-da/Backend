@@ -1,17 +1,22 @@
 package com.common.common.exception.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse<T> {
 
     private final int code;
     private final String message;
+    private final T data;
 
     public static ErrorResponse of(final int code, final String message) {
-        return new ErrorResponse<>(code, message);
+        return new ErrorResponse<>(code, message, null);
+    }
+
+    public static <T> ErrorResponse<T> of(final int code, final String message, final T data) {
+        return new ErrorResponse<T>(code, message, data);
     }
 }
