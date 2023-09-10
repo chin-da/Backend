@@ -20,7 +20,7 @@ resource "aws_route53_record" "vercel" {
   records = ["76.76.21.21"]
 }
 
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "www_to_root" {
   zone_id = aws_route53_zone.primary.zone_id
   name    = "www.chinda.kr"
   type    = "CNAME"
