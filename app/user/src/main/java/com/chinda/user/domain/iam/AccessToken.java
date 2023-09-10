@@ -5,9 +5,10 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
 @Component
@@ -15,7 +16,7 @@ import java.util.Date;
 public class AccessToken {
     private String message;
 
-    public AccessToken(final Long userId, Long expiration, String privateKey) {
+    public AccessToken(final Long userId, Long expiration, RSAPrivateKey privateKey) {
         final Date now = new Date();
 
         Claims claims = Jwts.claims()
@@ -27,11 +28,11 @@ public class AccessToken {
         this.message = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.RS256, privateKey)
+                .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
 
-    public boolean verifySignature(String publicKey) {
+    public boolean verifySignature(RSAPublicKey publicKey) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(publicKey)
@@ -43,7 +44,7 @@ public class AccessToken {
         }
     }
 
-    public long getSubject(String publicKey) {
+    public long getSubject(RSAPublicKey publicKey) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(publicKey)
                 .build()
