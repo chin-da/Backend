@@ -2,35 +2,41 @@ package com.auth.auth.service;
 
 import com.auth.auth.client.OAuthClient;
 import com.auth.auth.client.OAuthClientProvider;
-import com.auth.auth.dto.OauthUserResponse;
-import com.common.common.exception.MessageConstants;
-import com.common.common.exception.model.NotFoundException;
-import com.core.core.domain.user.service.UserService;
+import com.auth.auth.service.response.TokenResponseDto;
+import com.core.core.domain.user.User;
+import com.core.core.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OAuthService {
 
     private final OAuthClientProvider oAuthClientProvider;
-    private final UserService userService;
+    private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
 
     private static final String TOKEN_PREFIX = "Bearer ";
 
-    public void login(final String platformName, final String code) {
-
+    public TokenResponseDto login(final String platformName, final String code) {
         OAuthClient oAuthClient = oAuthClientProvider.getClient(platformName);
+        Long socialId = getSocialId(oAuthClient, code);
 
-        String accessToken = oAuthClient.getAccessToken(code);
-        OauthUserResponse user = oAuthClient.getUser(TOKEN_PREFIX + accessToken);
-
-        boolean isRegistered = userService.isRegisteredUser(user.getId());
-
-        if (!isRegistered) {
-            throw new NotFoundException(MessageConstants.RESOURCE_NOT_FOUND.getMessage());
+        Optional<User> user = userRepository.findUserBySocialId(socialId);
+        if (user.isPresent()) {
+            User registeredUser = user.get();
+            String token = jwtProvider.issueToken(registeredUser.getId());
+            return TokenResponseDto.of(token);
         }
-        // TODO : 토큰 반환 기능 구현
+        // TODO: 회원가입 로직 구현
+        return null;
+    }
+
+    private Long getSocialId(final OAuthClient oAuthClient, final String code) {
+        String accessToken = oAuthClient.getAccessToken(code);
+        return oAuthClient.getUser(TOKEN_PREFIX + accessToken).getId();
     }
 
 }

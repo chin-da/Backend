@@ -19,7 +19,7 @@ public class User extends BaseEntity {
     private Long socialId;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private Platform platform;
 
     @Column(nullable = false, unique = true)
