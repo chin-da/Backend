@@ -2,7 +2,7 @@ package com.api.api.advice;
 
 import com.common.common.exception.MessageConstants;
 import com.common.common.exception.dto.ErrorResponse;
-import com.common.common.exception.model.CustomException;
+import com.common.common.exception.model.HttpException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
     /**
      * Custom error
      */
-    @ExceptionHandler(CustomException.class)
-    protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
+    @ExceptionHandler(HttpException.class)
+    protected ResponseEntity<ErrorResponse> handleCustomException(HttpException e) {
         return ResponseEntity.status(e.getHttpStatus()).body(ErrorResponse.of(e.getStatusCode(), e.getMessage()));
     }
 
