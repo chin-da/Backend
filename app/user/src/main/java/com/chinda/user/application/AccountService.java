@@ -1,5 +1,6 @@
 package com.chinda.user.application;
 
+import com.chinda.user.application.exceptions.UserNotRegisteredException;
 import com.chinda.user.domain.iam.AccessToken;
 import com.chinda.user_shared_kernel.model.Platform;
 import com.chinda.user.domain.iam.KakaoOAuthRequester;
@@ -49,7 +50,7 @@ public class AccountService {
             User registeredUser = user.get();
             return new AccessToken(registeredUser.getId(), jwtExpiration, privateKey);
         } else {
-            throw new RuntimeException("Not a Registered User");
+            throw new UserNotRegisteredException();
         }
     }
 

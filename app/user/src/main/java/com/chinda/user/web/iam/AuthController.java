@@ -1,6 +1,7 @@
 package com.chinda.user.web.iam;
 
 import com.chinda.user.application.AccountService;
+import com.chinda.user.application.exceptions.UserNotRegisteredException;
 import com.chinda.user.domain.iam.AccessToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AuthController {
         try{
             return ResponseEntity.ok(accountService.login(platform, code));
             // TODO : 토큰 반환 기능 구현
-        } catch (RuntimeException e) {
+        } catch (UserNotRegisteredException e) {
             // TODO : 회원가입 페이지로 이동
             throw e;
         }
