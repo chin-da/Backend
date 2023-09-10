@@ -5,9 +5,10 @@ mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 
-curl -L https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml -o weave-daemonset-k8s.yaml
-vi weave-daemonset-k8s.yaml
-kubectl apply -f weave-daemonset-k8s.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
+curl -OL https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml
+sed -i 's/cidr: 192.168.0.0\/16/cidr: 10.244.0.0\/16/g' custom-resources.yaml
+kubectl create -f custom-resources.yaml
 
 master_node=$(kubectl get nodes | grep control-plane | awk '{print $1}')
 kubectl taint node $master_node node-role.kubernetes.io/control-plane:NoSchedule-
