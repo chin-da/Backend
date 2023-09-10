@@ -25,7 +25,7 @@ public class AuthController {
             // TODO : 토큰 반환 기능 구현
         } catch (RuntimeException e) {
             // TODO : 회원가입 페이지로 이동
-            return null;
+            throw e;
         }
     }
 }
