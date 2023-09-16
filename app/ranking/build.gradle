@@ -24,8 +24,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation project(':user-shared-kernel')
-	implementation project(':common')
+    implementation project(':iam-shared-kernel')
+    implementation project(':common')
 
 
 	compileOnly 'org.projectlombok:lombok'
