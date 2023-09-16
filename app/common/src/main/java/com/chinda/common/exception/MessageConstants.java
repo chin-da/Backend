@@ -1,4 +1,4 @@
-package com.common.common.exception;
+package com.chinda.common.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
