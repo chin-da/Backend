@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AccountServiceTest {
     @Test
-    @DisplayName("퍼블릭키와 프라이빗 키를 가진 OAuthRequester를 생성한다.")
     void Should_ProperlyCreated_When_GivenPEMStrings() throws NoSuchAlgorithmException, InvalidKeySpecException {
         String publicKeyPEM = "-----BEGIN PUBLIC KEY-----\n" +
                 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyRJjbGAYEU2yn1AJwXQx\n" +
