@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
-    private final KakaoOAuthAgreedUserFactory kakaoOAuthRequester;
+    private final KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory;
     private final UserRepository userRepository;
 
 
@@ -32,8 +32,8 @@ public class AccountService {
     private final RSAPrivateKey privateKey;
     private static final Long jwtExpiration = 120 * 60 * 1000L;
 
-    public AccountService(KakaoOAuthAgreedUserFactory kakaoOAuthRequester, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.kakaoOAuthRequester = kakaoOAuthRequester;
+    public AccountService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.kakaoOAuthAgreedUserFactory = kakaoOAuthAgreedUserFactory;
         this.userRepository = userRepository;
         this.publicKey = getPublicKeyFromPEM(publicKeyPEM);
         this.privateKey = getPrivateKeyFromPEM(privateKeyPEM);
@@ -42,7 +42,7 @@ public class AccountService {
 
     public AccessToken login(final String platformName, final String authCode) {
         Platform platform = Platform.valueOf(platformName);
-        OAuthAgreedUserFactory oAuthAgreedUserFactory = getOAuthRequester(platform);
+        OAuthAgreedUserFactory oAuthAgreedUserFactory = getOAuthAgreedUserFactory(platform);
         OAuthAgreedUser oAuthAgreedUser = oAuthAgreedUserFactory.getOAuthAgreedUser(authCode);
 
         Optional<User> user = userRepository.findUserBySocialId(oAuthAgreedUser.getSocialId());
@@ -59,9 +59,9 @@ public class AccountService {
         return user.isPresent();
     }
 
-    private OAuthAgreedUserFactory getOAuthRequester(final Platform platform) {
+    private OAuthAgreedUserFactory getOAuthAgreedUserFactory(final Platform platform) {
         return switch (platform) {
-            case KAKAO -> kakaoOAuthRequester;
+            case KAKAO -> kakaoOAuthAgreedUserFactory;
             case GOOGLE -> throw new UnsupportedOperationException();
         };
     }
