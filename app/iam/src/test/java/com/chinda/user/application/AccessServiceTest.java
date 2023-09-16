@@ -1,14 +1,11 @@
 package com.chinda.user.application;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class AccountServiceTest {
+class AccessServiceTest {
     @Test
     void Should_ProperlyCreated_When_GivenPEMStrings() throws NoSuchAlgorithmException, InvalidKeySpecException {
         String publicKeyPEM = "-----BEGIN PUBLIC KEY-----\n" +
@@ -49,7 +46,7 @@ class AccountServiceTest {
                 "c3qEiy8abVkOtqLL0s6D5NE=\n" +
                 "-----END PRIVATE KEY-----";
 
-        new AccountService(null, null, publicKeyPEM, privateKeyPEM);
+        new AccessService(null, null, publicKeyPEM, privateKeyPEM);
     }
 
 }

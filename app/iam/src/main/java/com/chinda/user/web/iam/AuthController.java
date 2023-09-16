@@ -1,6 +1,6 @@
 package com.chinda.user.web.iam;
 
-import com.chinda.user.application.AccountService;
+import com.chinda.user.application.AccessService;
 import com.chinda.user.domain.access.AccessToken;
 import com.chinda.user.web.iam.dto.request.LoginVo;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ import jakarta.validation.Valid;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AccountService accountService;
+    private final AccessService accessService;
 
     @PostMapping("/login")
     public ResponseEntity<AccessToken> login(
             @Valid @RequestBody final LoginVo loginVo) {
-        return ResponseEntity.ok(accountService.login(loginVo.getPlatformName(), loginVo.getAuthCode()));
+        return ResponseEntity.ok(accessService.login(loginVo.getPlatformName(), loginVo.getAuthCode()));
         // TODO : 토큰 반환 기능 구현
 
     }

@@ -22,7 +22,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+public class AccessService {
 
     private final KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory;
     private final UserRepository userRepository;
@@ -32,7 +32,7 @@ public class AccountService {
     private final RSAPrivateKey privateKey;
     private static final Long jwtExpiration = 120 * 60 * 1000L;
 
-    public AccountService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public AccessService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.kakaoOAuthAgreedUserFactory = kakaoOAuthAgreedUserFactory;
         this.userRepository = userRepository;
         this.publicKey = getPublicKeyFromPEM(publicKeyPEM);
