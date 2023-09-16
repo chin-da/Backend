@@ -1,5 +1,0 @@
-rootProject.name = 'chinda'
-include 'auth'
-include 'core'
-include 'api'
-include 'common'
