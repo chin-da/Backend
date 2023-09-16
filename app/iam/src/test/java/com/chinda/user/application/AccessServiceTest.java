@@ -1,5 +1,6 @@
 package com.chinda.user.application;
 
+import com.chinda.iam.application.AccessService;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;

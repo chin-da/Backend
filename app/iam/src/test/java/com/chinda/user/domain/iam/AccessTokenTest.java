@@ -1,7 +1,7 @@
 package com.chinda.user.domain.iam;
 
 
-import com.chinda.user.domain.access.AccessToken;
+import com.chinda.iam.domain.access.AccessToken;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

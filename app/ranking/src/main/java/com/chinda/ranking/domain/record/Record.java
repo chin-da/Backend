@@ -2,7 +2,7 @@ package com.chinda.ranking.domain.record;
 
 import com.chinda.common.model.TimestampedEntity;
 import com.chinda.ranking.domain.excercise.Exercise;
-import com.chinda.user_shared_kernel.model.User;
+import com.chinda.iam_shared_kernel.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
