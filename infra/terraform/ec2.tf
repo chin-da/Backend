@@ -53,6 +53,12 @@ resource "aws_instance" "master_node_1" {
   }
 
   iam_instance_profile = aws_iam_instance_profile.k8s_instance_profile.name
+
+  lifecycle {
+    ignore_changes = [
+      ami, user_data
+    ]
+  }
 }
 
 resource "aws_instance" "worker_node_1" {
@@ -72,5 +78,11 @@ resource "aws_instance" "worker_node_1" {
 
   tags = {
     Name = "worker-node-1"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      ami, user_data
+    ]
   }
 }

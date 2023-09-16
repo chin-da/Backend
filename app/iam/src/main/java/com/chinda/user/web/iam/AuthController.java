@@ -1,14 +1,16 @@
 package com.chinda.user.web.iam;
 
 import com.chinda.user.application.AccountService;
-import com.chinda.user.application.exceptions.UserNotRegisteredException;
 import com.chinda.user.domain.access.AccessToken;
+import com.chinda.user.web.iam.dto.request.LoginVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,14 +21,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AccessToken> login(
-            @RequestParam(name = "platform", required = true) final String platform,
-            @RequestParam(name = "code", required = true) final String code) {
-        try{
-            return ResponseEntity.ok(accountService.login(platform, code));
-            // TODO : 토큰 반환 기능 구현
-        } catch (UserNotRegisteredException e) {
-            // TODO : 회원가입 페이지로 이동
-            throw e;
-        }
+            @Valid @RequestBody final LoginVo loginVo) {
+        return ResponseEntity.ok(accountService.login(loginVo.getPlatformName(), loginVo.getAuthCode()));
+        // TODO : 토큰 반환 기능 구현
+
     }
 }
