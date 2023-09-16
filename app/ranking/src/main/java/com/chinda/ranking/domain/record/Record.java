@@ -1,6 +1,6 @@
 package com.chinda.ranking.domain.record;
 
-import com.chinda.common.model.BaseEntity;
+import com.chinda.common.model.TimestampedEntity;
 import com.chinda.ranking.domain.excercise.Exercise;
 import com.chinda.user_shared_kernel.model.User;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Record extends BaseEntity {
+public class Record extends TimestampedEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

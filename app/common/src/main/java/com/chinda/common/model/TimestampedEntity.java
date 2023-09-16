@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public abstract class TimestampedEntity {
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String TIME_ZONE = "Asia/Seoul";
 
