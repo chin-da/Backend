@@ -1,0 +1,6 @@
+rootProject.name = 'chinda-ddd'
+include 'ranking'
+include 'iam'
+include'iam-shared-kernel'
+include 'common'
+
