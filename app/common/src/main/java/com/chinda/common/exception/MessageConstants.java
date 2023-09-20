@@ -24,6 +24,11 @@ public enum MessageConstants {
      */
     RESOURCE_NOT_FOUND("존재하지 않는 데이터입니다."),
     USER_NOT_FOUND("존재하지 않는 사용자입니다."),
+
+    /**
+     * 409 CONFLICT
+     */
+    CONFLICT_NICKNAME("존재하는 닉네임입니다."),
     ;
 
     private final String message;
