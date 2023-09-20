@@ -1,4 +1,11 @@
 package com.chinda.iam.application.exceptions;
 
-public final class UserNotRegisteredException extends RuntimeException{
+import com.chinda.common.exception.HttpException;
+import org.springframework.http.HttpStatus;
+
+public final class UserNotRegisteredException extends HttpException {
+
+    public UserNotRegisteredException(String message) {
+        super(HttpStatus.NOT_FOUND, message);
+    }
 }
