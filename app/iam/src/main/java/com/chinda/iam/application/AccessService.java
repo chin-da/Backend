@@ -24,9 +24,14 @@ import java.util.Optional;
 @Service
 public class AccessService {
 
+    private static final String PUBLIC_KEY_PREFIX = "-----BEGIN PUBLIC KEY-----";
+    private static final String PUBLIC_KEY_SUFFIX = "-----END PUBLIC KEY-----";
+    private static final String PRIVATE_KEY_PREFIX = "-----BEGIN PRIVATE KEY-----";
+    private static final String PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
+    private static final String EMPTY_STRING = "";
+
     private final KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory;
     private final UserRepository userRepository;
-
 
     private final RSAPublicKey publicKey;
     private final RSAPrivateKey privateKey;
@@ -67,9 +72,9 @@ public class AccessService {
     }
 
     private RSAPublicKey getPublicKeyFromPEM(String publicKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String publicKeyBase64 = publicKeyPEM.replace("-----BEGIN PUBLIC KEY-----", "")
-                .replaceAll(System.lineSeparator(), "")
-                .replace("-----END PUBLIC KEY-----", "");
+        String publicKeyBase64 = publicKeyPEM.replace(PUBLIC_KEY_PREFIX, EMPTY_STRING)
+                .replaceAll(System.lineSeparator(), EMPTY_STRING)
+                .replace(PUBLIC_KEY_SUFFIX, EMPTY_STRING);
 
         byte[] encoded = Base64.decodeBase64(publicKeyBase64);
 
@@ -79,9 +84,9 @@ public class AccessService {
     }
 
     private RSAPrivateKey getPrivateKeyFromPEM(String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String privateKeyBase64 = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----", "")
-                .replaceAll(System.lineSeparator(), "")
-                .replace("-----END PRIVATE KEY-----", "");
+        String privateKeyBase64 = privateKeyPEM.replace(PRIVATE_KEY_PREFIX, EMPTY_STRING)
+                .replaceAll(System.lineSeparator(), EMPTY_STRING)
+                .replace(PRIVATE_KEY_SUFFIX, EMPTY_STRING);
 
         byte[] encoded = Base64.decodeBase64(privateKeyBase64);
 
