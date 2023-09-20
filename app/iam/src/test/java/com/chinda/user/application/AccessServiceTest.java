@@ -47,7 +47,7 @@ class AccessServiceTest {
                 "c3qEiy8abVkOtqLL0s6D5NE=\n" +
                 "-----END PRIVATE KEY-----";
 
-        new AccessService(null, null, publicKeyPEM, privateKeyPEM);
+        new AccessService(null, null, privateKeyPEM);
     }
 
 }
