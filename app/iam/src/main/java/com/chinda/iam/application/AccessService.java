@@ -1,5 +1,6 @@
 package com.chinda.iam.application;
 
+import com.chinda.common.exception.MessageConstants;
 import com.chinda.iam.application.exceptions.UserNotRegisteredException;
 import com.chinda.iam.domain.access.AccessToken;
 import com.chinda.iam.domain.access.KakaoOAuthAgreedUserFactory;
@@ -15,32 +16,23 @@ import org.springframework.stereotype.Service;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Optional;
 
 @Service
 public class AccessService {
-
-    private static final String PUBLIC_KEY_PREFIX = "-----BEGIN PUBLIC KEY-----";
-    private static final String PUBLIC_KEY_SUFFIX = "-----END PUBLIC KEY-----";
     private static final String PRIVATE_KEY_PREFIX = "-----BEGIN PRIVATE KEY-----";
     private static final String PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
     private static final String EMPTY_STRING = "";
 
     private final KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory;
     private final UserRepository userRepository;
-
-    private final RSAPublicKey publicKey;
     private final RSAPrivateKey privateKey;
     private static final Long jwtExpiration = 120 * 60 * 1000L;
 
-    public AccessService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public AccessService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.kakaoOAuthAgreedUserFactory = kakaoOAuthAgreedUserFactory;
         this.userRepository = userRepository;
-        this.publicKey = getPublicKeyFromPEM(publicKeyPEM);
         this.privateKey = getPrivateKeyFromPEM(privateKeyPEM);
     }
 
@@ -50,18 +42,12 @@ public class AccessService {
         OAuthAgreedUserFactory oAuthAgreedUserFactory = getOAuthAgreedUserFactory(platform);
         OAuthAgreedUser oAuthAgreedUser = oAuthAgreedUserFactory.getOAuthAgreedUser(authCode);
 
-        Optional<User> user = userRepository.findUserBySocialId(oAuthAgreedUser.getSocialId());
-        if (user.isPresent()) {
-            User registeredUser = user.get();
-            return new AccessToken(registeredUser.getId(), jwtExpiration, privateKey);
-        } else {
-            throw new UserNotRegisteredException();
-        }
+        User registeredUser = getUser(oAuthAgreedUser.getSocialId());
+        return new AccessToken(registeredUser.getId(), jwtExpiration, privateKey);
     }
 
-    public boolean isRegistered(final Long socialId) {
-        Optional<User> user = userRepository.findUserBySocialId(socialId);
-        return user.isPresent();
+    public User getUser(final Long socialId) {
+        return userRepository.findUserBySocialId(socialId).orElseThrow(() -> new UserNotRegisteredException(MessageConstants.USER_NOT_FOUND.getMessage()));
     }
 
     private OAuthAgreedUserFactory getOAuthAgreedUserFactory(final Platform platform) {
@@ -69,18 +55,6 @@ public class AccessService {
             case KAKAO -> kakaoOAuthAgreedUserFactory;
             case GOOGLE -> throw new UnsupportedOperationException();
         };
-    }
-
-    private RSAPublicKey getPublicKeyFromPEM(String publicKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String publicKeyBase64 = publicKeyPEM.replace(PUBLIC_KEY_PREFIX, EMPTY_STRING)
-                .replaceAll(System.lineSeparator(), EMPTY_STRING)
-                .replace(PUBLIC_KEY_SUFFIX, EMPTY_STRING);
-
-        byte[] encoded = Base64.decodeBase64(publicKeyBase64);
-
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
-        return (RSAPublicKey) keyFactory.generatePublic(keySpec);
     }
 
     private RSAPrivateKey getPrivateKeyFromPEM(String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
