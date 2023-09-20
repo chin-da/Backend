@@ -1,4 +1,4 @@
-package com.chinda.user.domain.iam;
+package com.chinda.iam.user.domain.iam;
 
 
 import com.chinda.iam.domain.access.AccessToken;

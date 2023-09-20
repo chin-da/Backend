@@ -1,4 +1,4 @@
-package com.chinda.common;
+package com.chinda.iam.common;
 
 import com.chinda.common.config.JpaConfig;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

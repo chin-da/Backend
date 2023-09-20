@@ -1,4 +1,4 @@
-package com.chinda.user.application;
+package com.chinda.iam.user.application;
 
 import com.chinda.iam.application.IdentityService;
 import com.chinda.iam.application.exceptions.DuplicateNicknameException;

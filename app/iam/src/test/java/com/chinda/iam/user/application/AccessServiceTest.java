@@ -1,4 +1,4 @@
-package com.chinda.user.application;
+package com.chinda.iam.user.application;
 
 import com.chinda.iam.application.AccessService;
 import org.junit.jupiter.api.Test;
