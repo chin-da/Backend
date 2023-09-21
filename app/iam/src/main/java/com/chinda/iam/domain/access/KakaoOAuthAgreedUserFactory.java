@@ -1,8 +1,8 @@
 package com.chinda.iam.domain.access;
 
-import com.chinda.iam_shared_kernel.model.Platform;
 import com.chinda.iam.domain.access.dto.KakaoTokenResponse;
 import com.chinda.iam.domain.access.dto.KakaoUserResponse;
+import com.chinda.iam_shared_kernel.model.Platform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -43,7 +43,6 @@ public class KakaoOAuthAgreedUserFactory implements OAuthAgreedUserFactory {
     private String getAccessToken(String authCode) {
         return kakaoAuthApiClient.getAccessToken(GRANT_TYPE, clientId, redirectUri, authCode).getAccessToken();
     }
-
 
 
     @FeignClient(name = "kakaoApiClient", url = KAKAO_API_URI)
