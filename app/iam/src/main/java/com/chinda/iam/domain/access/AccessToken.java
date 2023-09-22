@@ -5,18 +5,43 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class AccessToken {
     private String message;
+    @Value("${jwt.private-key-pem}")
+    private String privateKeyPEM;
+    private static final String PRIVATE_KEY_PREFIX = "-----BEGIN PRIVATE KEY-----";
+    private static final String PRIVATE_KEY_SUFFIX = "-----END PRIVATE KEY-----";
+    private static final String EMPTY_STRING = "";
 
-    public AccessToken(final Long userId, Long expiration, RSAPrivateKey privateKey) {
+    private RSAPrivateKey getPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String privateKeyBase64 = privateKeyPEM.replace(PRIVATE_KEY_PREFIX, EMPTY_STRING)
+                .replaceAll(System.lineSeparator(), EMPTY_STRING)
+                .replace(PRIVATE_KEY_SUFFIX, EMPTY_STRING);
+
+        byte[] encoded = Base64.decodeBase64(privateKeyBase64);
+
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
+
+        return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+    }
+
+    public AccessToken(final Long userId, Long expiration) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        RSAPrivateKey privateKey = getPrivateKey();
         final Date now = new Date();
 
         Claims claims = Jwts.claims()

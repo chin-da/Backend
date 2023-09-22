@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AccessToken> login(
-            @Valid @RequestBody final LoginVo loginVo) {
+            @Valid @RequestBody final LoginVo loginVo) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return ResponseEntity.ok(accessService.login(loginVo.getPlatformName(), loginVo.getAuthCode()));
     }
 
