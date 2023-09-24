@@ -8,7 +8,7 @@ resource "aws_security_group" "ec2_ssh_allow_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["175.208.213.141/32"]
+    cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
   }
 }
 
@@ -56,4 +56,8 @@ resource "aws_security_group" "ec2_internet_inbound_allow_group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
 }
