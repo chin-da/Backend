@@ -20,14 +20,14 @@ resource "aws_ssm_parameter" "db_password" {
 }
 
 resource "aws_ssm_parameter" "chinda_public_key" {
-  name      = "/chinda/ssl/public_key"
+  name      = "/chinda/token/public_key_pem"
   type      = "String"
   value     = file("./keys/chinda_public.pem")
   overwrite = true
 }
 
 resource "aws_ssm_parameter" "chinda_private_key" {
-  name      = "/chinda/ssl/private_key"
+  name      = "/chinda/token/private_key_pem"
   type      = "SecureString"
   value     = file("./keys/chinda_private.pem")
   overwrite = true
