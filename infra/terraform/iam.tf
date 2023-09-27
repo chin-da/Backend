@@ -38,13 +38,34 @@ resource "aws_iam_policy" "ssm_parameter_allow_all_policy" {
   policy      = data.aws_iam_policy_document.ssm_parameter_allow_all_policy.json
 }
 
+data "aws_iam_policy_document" "ecr_allow_image_pull_policy" {
+  statement {
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchGetImage",
+      "ecr:GetDownloadUrlForLayer",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "ecr_allow_image_pull_policy" {
+  name        = "ecr_allow_image_pull_policy"
+  description = "allow all ecr image pull actions"
+  policy      = data.aws_iam_policy_document.ecr_allow_image_pull_policy.json
+}
+
 resource "aws_iam_instance_profile" "k8s_instance_profile" {
   name = "k8s-instance-profile"
-
   role = aws_iam_role.k8s_instance_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "ssm-parameter-allow-all-policy-attachment" {
+resource "aws_iam_role_policy_attachment" "ssm_parameter_allow_all_policy_attachment" {
   role       = aws_iam_role.k8s_instance_role.name
   policy_arn = aws_iam_policy.ssm_parameter_allow_all_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_allow_image_pull_policy_attachment" {
+  role       = aws_iam_role.k8s_instance_role.name
+  policy_arn = aws_iam_policy.ecr_allow_image_pull_policy.arn
 }
