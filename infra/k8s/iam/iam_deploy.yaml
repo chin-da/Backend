@@ -18,7 +18,7 @@ spec:
       - name: regcred
       containers:
       - name: iam
-        image: 627145993949.dkr.ecr.ap-northeast-2.amazonaws.com/chinda_iam:f45dd19
+        image: 627145993949.dkr.ecr.ap-northeast-2.amazonaws.com/chinda_iam:latest
         ports:
         - containerPort: 8080
           name: iam-port
