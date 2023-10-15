@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ip-masq-agent
+data:
+  nonMasqueradeCIDRs:
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+  cidrLimit: 64
+  masqLinkLocal: false
+  masqLinkLocalIPv6: false
+  resyncInterval: 60s
