@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM eclipse-temurin:17 AS build
 
 WORKDIR /build/
 COPY settings.gradle settings.gradle
@@ -18,6 +18,6 @@ COPY ./common/src ./common/src
 
 RUN ./gradlew :iam:build -x test
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:17
 COPY --from=build /build/iam/build/libs/iam-0.0.1-SNAPSHOT.jar iam.jar
 ENTRYPOINT [ "java", "-jar", "iam.jar"]
