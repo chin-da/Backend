@@ -1,1 +1,0 @@
-kubectl create configmap ip-masq-agent --from-file=ip_masq_config.yaml --namespace=kube-system
