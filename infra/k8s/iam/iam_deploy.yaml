@@ -59,7 +59,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: token-secret
-                key: public-key-pem
+                key: private-key-pem
           
           
           
