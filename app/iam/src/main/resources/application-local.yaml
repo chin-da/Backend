@@ -1,0 +1,30 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3030/chinda
+    username: root
+    password: local
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+oauth:
+  kakao:
+    client-id: ${CHINDA_KAKAO_CLIENT_ID}
+    redirect-uri: http://localhost:3000/redirect
+
+jwt:
+  public-key-pem: ${CHINDA_JWT_PUBLIC_KEY_PEM}
+  private-key-pem: ${CHINDA_JWT_PRIVATE_KEY_PEM}

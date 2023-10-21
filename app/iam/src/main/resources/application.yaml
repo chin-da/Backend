@@ -1,36 +1,6 @@
 spring:
   profiles:
-    active: local
-
-# local
----
-spring:
-  config:
-    activate:
-      on-profile: local
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${db-url}
-    username: ${db-username}
-    password: ${db-password}
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
+    active: ${profile_active}
 
 server:
   port: 8080
-
-oauth:
-  kakao:
-    client-id: ${client-id}
-    redirect-uri: ${redirect-uri}
-
-jwt:
-  public-key-pem: ${JWT_PUBLIC_KEY_PEM}
-  private-key-pem: ${JWT_PRIVATE_KEY_PEM}
