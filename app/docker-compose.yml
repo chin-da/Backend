@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  chinda_iam:
+    depends_on:
+      - chinda_mysql
+    build:
+      context: .
+      dockerfile: ./iam/Dockerfile
+    environment:
+      - db-url=chinda_mysql:3306/chinda
+      - db-username=root
+      - db-password=local
+      - client-id=${CHINDA_KAKAO_CLIENT_ID}
+      - redirect-uri=http://localhost:3000/redirect
+      - JWT_PUBLIC_KEY_PEM=${CHINDA_JWT_PUBLIC_KEY_PEM}
+      - JWT_PRIVATE_KEY_PEM=${CHINDA_JWT_PRIVATE_KEY_PEM}
+    ports:
+      - 8081:8080
+
+  chinda_mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: chinda
+      MYSQL_ROOT_PASSWORD: local
+    volumes:
+      - chinda_mysql_volume:/var/lib/mysql
+    ports:
+      - 3030:3306
+
+volumes:
+  chinda_mysql_volume:

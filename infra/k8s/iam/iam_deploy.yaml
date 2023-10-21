@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iam-deploy
+  labels:
+    app: iam
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: iam
+  template:
+    metadata:
+      labels:
+        app: iam
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: iam
+        image: 627145993949.dkr.ecr.ap-northeast-2.amazonaws.com/chinda_iam:latest
+        ports:
+        - containerPort: 8080
+          name: iam-port
+        env:
+          - name: profile_active
+            value: prod
+          - name: db_url
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: url
+          - name: db_username
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: username
+          - name: db_password
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: password
+          - name: client_id
+            valueFrom:
+              configMapKeyRef:
+                name: iam-config
+                key: kakao-client-id
+          - name: redirect_uri
+            valueFrom:
+              configMapKeyRef:
+                name: iam-config
+                key: redirect-uri
+          - name: public_key_pem
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: public-key-pem
+          - name: private_key_pem
+            valueFrom:
+              secretKeyRef:
+                name: token-secret
+                key: private-key-pem
+          
+          
+          

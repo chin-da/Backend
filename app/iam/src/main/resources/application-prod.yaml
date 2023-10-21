@@ -1,0 +1,30 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${db_url}
+    username: ${db_username}
+    password: ${db_password}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+oauth:
+  kakao:
+    client-id: ${client_id}
+    redirect-uri: ${redirect_uri}
+
+jwt:
+  public-key-pem: ${public_key_pem}
+  private-key-pem: ${private_key_pem}
