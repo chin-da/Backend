@@ -1,6 +1,6 @@
 package com.chinda.iam.domain.identity;
 
-import com.chinda.iam_shared_kernel.model.User;
+import com.chinda.iam_shared_kernel.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

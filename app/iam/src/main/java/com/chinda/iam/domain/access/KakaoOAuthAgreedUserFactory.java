@@ -1,6 +1,6 @@
 package com.chinda.iam.domain.access;
 
-import com.chinda.iam_shared_kernel.model.Platform;
+import com.chinda.iam_shared_kernel.domain.user.Platform;
 import com.chinda.iam.domain.access.dto.KakaoTokenResponse;
 import com.chinda.iam.domain.access.dto.KakaoUserResponse;
 import lombok.RequiredArgsConstructor;

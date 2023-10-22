@@ -8,14 +8,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Exercise {
+public class Excercise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String code;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
+
+    private float certificateCriterion;
+    
 }

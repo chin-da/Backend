@@ -1,4 +1,4 @@
-package com.chinda.iam_shared_kernel.model;
+package com.chinda.iam_shared_kernel.domain.user;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
