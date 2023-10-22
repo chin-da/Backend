@@ -6,6 +6,7 @@ import com.chinda.iam.domain.access.KakaoOAuthAgreedUserFactory;
 import com.chinda.iam.domain.access.OAuthAgreedUser;
 import com.chinda.iam.domain.access.OAuthAgreedUserFactory;
 import com.chinda.iam.domain.identity.UserRepository;
+import com.chinda.iam_shared_kernel.domain.user.Gender;
 import com.chinda.iam_shared_kernel.domain.user.Platform;
 import com.chinda.iam_shared_kernel.domain.user.User;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -20,6 +21,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class AccessService {
@@ -28,6 +30,7 @@ public class AccessService {
     private final UserRepository userRepository;
 
 
+    private final String publicKeyPEM;
     private final RSAPublicKey publicKey;
     private final RSAPrivateKey privateKey;
     private static final Long jwtExpiration = 120 * 60 * 1000L;
@@ -35,6 +38,7 @@ public class AccessService {
     public AccessService(KakaoOAuthAgreedUserFactory kakaoOAuthAgreedUserFactory, UserRepository userRepository, @Value("${jwt.public-key-pem}") String publicKeyPEM, @Value("${jwt.private-key-pem}") String privateKeyPEM) throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.kakaoOAuthAgreedUserFactory = kakaoOAuthAgreedUserFactory;
         this.userRepository = userRepository;
+        this.publicKeyPEM = publicKeyPEM;
         this.publicKey = getPublicKeyFromPEM(publicKeyPEM);
         this.privateKey = getPrivateKeyFromPEM(privateKeyPEM);
     }
@@ -88,6 +92,30 @@ public class AccessService {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
         return (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+    }
+
+    public AccessToken tempRegisterAndLogin(final String platformName, final String authCode) {
+        User user = createMockUser();
+        userRepository.save(user);
+        return new AccessToken(user.getId(), jwtExpiration, privateKey);
+    }
+
+    private User createMockUser() {
+        Random random = new Random();
+        return User.builder()
+                .id(random.nextLong())
+                .socialId(random.nextLong())
+                .platform(Platform.KAKAO)
+                .nickname("test_nickname_"+random.nextInt())
+                .age(random.nextInt(100))
+                .gender(random.nextBoolean() ? Gender.MALE : Gender.FEMALE)
+                .height((double) random.nextInt(130, 200))
+                .weight((double) random.nextInt(30, 200))
+                .build();
+    }
+
+    public String getPublicKey() {
+        return this.publicKeyPEM;
     }
 }
 
