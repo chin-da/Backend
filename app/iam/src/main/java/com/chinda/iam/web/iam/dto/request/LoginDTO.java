@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotBlank;
 
-import java.io.Serializable;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class LoginVo {
+public class LoginDTO {
 
     @NotBlank(message = "플랫폼명은 필수 값입니다.")
     private String platformName;
