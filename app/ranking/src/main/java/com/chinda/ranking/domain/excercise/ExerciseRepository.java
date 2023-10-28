@@ -1,6 +1,8 @@
 package com.chinda.ranking.domain.excercise;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ExerciseRepository extends Repository<Exercise, Long> {
+@Repository
+public interface ExerciseRepository extends CrudRepository<Exercise, String> {
 }
