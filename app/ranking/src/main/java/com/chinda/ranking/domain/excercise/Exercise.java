@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Excercise {
+public class Exercise {
 
     @Id
     private String code;
@@ -19,5 +19,12 @@ public class Excercise {
     private String description;
 
     private float certificateCriterion;
-    
+
+    public boolean needsCertificate(float measurement) {
+        return certificateCriterion <= measurement;
+    }
+
+    public boolean measurementInValidRange(float measurement) {
+        return 0 <= measurement && measurement <= 500;
+    }
 }
